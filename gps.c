@@ -2,10 +2,9 @@
 // GPS: communicate with ublox GPS module via ubx protocol
 //
 
-#include "stm32f0xx_hal.h"
+//#include "stm32f0xx_hal.h"
 
 #include "config.h"
-#include "gpio.h"
 #include "uart.h"
 #include "gps.h"
 
@@ -24,7 +23,7 @@ void gps_update_data(void)
 	// Error!
 	if(!gpson)
 	{
-		led_blink(5);
+		//led_blink(5);
 		return;
 	}
 
@@ -55,7 +54,7 @@ void gps_update_data(void)
 
     // Check 60 bytes minus SYNC and CHECKSUM (4 bytes)
     if( !_gps_verify_checksum(&buf[2], 96) )
-        led_blink(2);
+       // led_blink(2);
 
 
     //volatile uint32_t gpstime_ms = (buf[6+0] << 24) | (buf[6+1] << 16) | buf[6+2] << 8) | (buf[6+3]);
