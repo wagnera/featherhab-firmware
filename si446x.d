@@ -1,0 +1,23 @@
+si446x.o: si446x.c libopencm3//include/libopencm3/stm32/spi.h \
+ libopencm3//include/libopencm3/cm3/common.h \
+ /usr/lib/gcc/arm-none-eabi/4.9.3/include/stdint.h \
+ /usr/include/newlib/stdint.h \
+ /usr/include/newlib/machine/_default_types.h \
+ /usr/include/newlib/sys/features.h /usr/include/newlib/sys/_intsup.h \
+ /usr/include/newlib/sys/_stdint.h \
+ /usr/lib/gcc/arm-none-eabi/4.9.3/include/stdbool.h \
+ libopencm3//include/libopencm3/stm32/memorymap.h \
+ libopencm3//include/libopencm3/stm32/f0/memorymap.h \
+ libopencm3//include/libopencm3/cm3/memorymap.h \
+ libopencm3//include/libopencm3/stm32/f0/spi.h \
+ libopencm3//include/libopencm3/stm32/common/spi_common_f03.h \
+ libopencm3//include/libopencm3/stm32/common/spi_common_all.h \
+ libopencm3//include/libopencm3/stm32/rcc.h \
+ libopencm3//include/libopencm3/stm32/f0/rcc.h \
+ libopencm3//include/libopencm3/stm32/common/rcc_common_all.h si446x.h \
+ libopencm3//include/libopencm3/stm32/gpio.h \
+ libopencm3//include/libopencm3/stm32/f0/gpio.h \
+ libopencm3//include/libopencm3/stm32/common/gpio_common_f24.h \
+ libopencm3//include/libopencm3/stm32/common/gpio_common_f234.h \
+ libopencm3//include/libopencm3/stm32/common/gpio_common_all.h config.h \
+ delay.h
