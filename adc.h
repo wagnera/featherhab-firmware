@@ -3,5 +3,6 @@
 
 void adc_init(void);
 int16_t adc_gettemp(void);
+float adc_getsolar(void);
 
 #endif

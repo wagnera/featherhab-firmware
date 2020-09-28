@@ -44,7 +44,7 @@
 // - Home:       0
 // - IGate:      5
 #define S_CALLSIGN      "KN4GQL"
-#define S_CALLSIGN_ID   9
+#define S_CALLSIGN_ID   7
 
 // Destination callsign: APRS (with SSID=0) is usually okay.
 #define D_CALLSIGN      "APRS"

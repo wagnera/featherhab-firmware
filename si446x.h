@@ -5,7 +5,8 @@
 
 // Hardware Options ///////////////////
 //#define SI446x_VCXO_FREQ  30000000UL
-#define SI446x_VCXO_FREQ  26000000UL
+#define SI446x_VCXO_FREQ  25000000//For uluc-hab
+//#define SI446x_VCXO_FREQ  26000000//For ul-hab
 #define SI446x_SPI SPI1
 
 #define SI446x_CS_PORT GPIOA

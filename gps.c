@@ -673,7 +673,7 @@ void parse_gps_transmission(void){
 		}
 	
 		//magnetic variation
-		else if(decodeState == RMC_MAG_VARIATION)
+		/*else if(decodeState == RMC_MAG_VARIATION)
 		{
 			if (byte == '*') //end of this data type
 			{
@@ -687,7 +687,7 @@ void parse_gps_transmission(void){
 				variation[numBytes] = byte; //adjust number of bytes to fit array
 				numBytes++;
 			}
-		}
+		}*/
 		///parses RMC transmissions END
 	
 	

@@ -34,7 +34,7 @@ void adc_init(void)
     rcc_periph_clock_enable(RCC_ADC);
     rcc_periph_clock_enable(RCC_GPIOA);
 
-    uint8_t channel_array[] = { ADC_CHANNEL_TEMP };
+    uint8_t channel_array[] = { ADC_CHANNEL6, ADC_CHANNEL_TEMP };
 
     adc_power_off(ADC1);
 
@@ -70,6 +70,8 @@ void adc_init(void)
 int16_t adc_gettemp(void)
 {
     // Read first channel (internal temperature)
+    uint8_t channel_array[] = { ADC_CHANNEL_TEMP };
+    adc_set_regular_sequence(ADC1, 1, channel_array);
     adc_start_conversion_regular(ADC1);
     while (!(adc_eoc(ADC1)));
     int32_t tempraw = adc_read_regular(ADC1);
@@ -86,5 +88,22 @@ int16_t adc_gettemp(void)
     // temp110cal is 3630 
     // for some reason, these calculations aren't returning what I would expect...
     return temperature;
+
+}
+
+float adc_getsolar(void)
+{
+    // Read first channel (internal temperature)
+    uint8_t channel_array[] = { ADC_CHANNEL6 };
+    adc_set_regular_sequence(ADC1, 1, channel_array);
+    adc_start_conversion_regular(ADC1);
+    while (!(adc_eoc(ADC1)));
+    int32_t voltageraw = adc_read_regular(ADC1);
+
+
+    float voltage;
+    voltage = (float)voltageraw / 4096.0 * 2.0 * 3.3;
+
+    return voltage;
 
 }
