@@ -112,11 +112,6 @@ void aprs_send(void)
   char* altitude = get_gpsaltitude();
   if (altitude[0] != 0x00)
   {
-    altitude[0] = '1';
-    altitude[1] = '2';
-    altitude[2] = '3';
-    altitude[3] = '4';
-    altitude[4] = 0x00;
     int alt_in_ft = atoi(altitude) * 3.2808399;
     ax25_send_string("/A=");            // Altitude (feet). Goes anywhere in the comment area
     char alt_field[10];
