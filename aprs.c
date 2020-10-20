@@ -80,19 +80,20 @@ void aprs_send(void)
     ax25_send_byte('/');                // Symbol table
     ax25_send_string(get_longitudeTrimmed());     // Lon: 000deg and 25.80 min
     ax25_send_byte('W');
+    ax25_send_byte('O');                // Symbol: O=balloon, -=QTH
   }
   else
   {
     ax25_send_string("0000.00");     // Lat: 38deg and 22.20 min (.20 are NOT seconds, but 1/100th of minutes)
     ax25_send_byte('N');
-    ax25_send_byte('/');                // Symbol table
-    ax25_send_string("0000.00");     // Lon: 000deg and 25.80 min
+    ax25_send_byte('\\');                // Symbol table
+    ax25_send_string("00000.00");     // Lon: 000deg and 25.80 min
     ax25_send_byte('W');
-    ax25_send_byte('.'); //aprs spec requires . when null location
+    ax25_send_byte('.');              //unknown/indeterminate position symbol
   }
   
 
-  ax25_send_byte('O');                // Symbol: O=balloon, -=QTH
+
   
   char* course = get_course();
   if (course[0] != 0x00)
