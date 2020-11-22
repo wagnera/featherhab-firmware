@@ -111,7 +111,8 @@ void si446x_prepare(void)
     */
   
 
-    si446x_setpower(0x7F);
+    si446x_setpower(0x7F); //~100mW
+    //si446x_setpower(0x3C); //~50mW
 
     // Set data rate (unsure if this actually affects direct modulation)
                          //        set prop   group     numprops  startprop   data

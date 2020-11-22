@@ -83,6 +83,7 @@ int main(void)
 
     si446x_setup();
 
+    //delay(500); //wait a bit before turning on GPS
     gps_init();
 
     afsk_init();
@@ -98,6 +99,10 @@ int main(void)
     
     uint32_t aprs_period = 30000;
 
+    LED_ON;
+    delay(400);
+    LED_OFF;
+    delay(4000);
     while(1)
     {
         // Transmit very often for the first 8 minutes
@@ -118,9 +123,6 @@ int main(void)
                 delay(30);
             }*/
             aprs_send();
-            LED_ON;
-            delay(200);
-            LED_OFF;
             last_aprs = get_millis_elapsed();
         }
 
@@ -138,14 +140,14 @@ int main(void)
 
         if (gps_hasfix())
         {
-            int ii;
+            /*int ii;
             for (ii=0; ii < 10; ii++)
             {
                 LED_ON;
                 delay(500);
                 LED_OFF;
                 delay(100);
-            }        
+            }*/        
         }
         else
         {

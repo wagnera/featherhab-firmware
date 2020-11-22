@@ -30,6 +30,7 @@
 #include "adc.h"
 #include "ax25.h"
 #include "float2char.h"
+#include "str2float.h"
 
 
 int32_t meters_to_feet(int32_t m)
@@ -40,22 +41,49 @@ int32_t meters_to_feet(int32_t m)
 
 void aprs_send(void)
 {
-  struct s_address addresses[] = { 
-    {D_CALLSIGN, D_CALLSIGN_ID},  // Destination callsign
-    {"", S_CALLSIGN_ID},  // Source callsign (-11 = balloon, -9 = car)
-		//{S_CALLSIGN, S_CALLSIGN_ID},
-#ifdef DIGI_PATH1
-    {DIGI_PATH1, DIGI_PATH1_TTL}, // Digi1 (first digi in the chain)
-#endif
-#ifdef DIGI_PATH2
-    {DIGI_PATH2, DIGI_PATH2_TTL}, // Digi2 (second digi in the chain)
-#endif
-  };
 
+    struct s_address addresses_pathless[] = { 
+        {D_CALLSIGN, D_CALLSIGN_ID},  // Destination callsign
+        {"", S_CALLSIGN_ID},  // Source callsign (-11 = balloon, -9 = car)
+      };
+
+    struct s_address addresses_wide[] = { 
+        {D_CALLSIGN, D_CALLSIGN_ID},  // Destination callsign
+        {"", S_CALLSIGN_ID},  // Source callsign (-11 = balloon, -9 = car)
+        //{S_CALLSIGN, S_CALLSIGN_ID},
+        {DIGI_PATH1, DIGI_PATH1_TTL},
+      };
+
+    char* altitude = get_gpsaltitude();
+    if (altitude[0] != 0x00)
+    {
+      if (str2float(altitude) > PATH_ALT_THRES)
+      {
+        strncpy(addresses_pathless[1].callsign, S_CALLSIGN, 7);
+        // emz: modified this to get the size of the first address rather than the size of the struct itself, which fails
+        ax25_send_header(addresses_pathless, sizeof(addresses_pathless)/sizeof(addresses_pathless[0]));
+      }
+      else
+      {
+        strncpy(addresses_wide[1].callsign, S_CALLSIGN, 7);
+        // emz: modified this to get the size of the first address rather than the size of the struct itself, which fails
+        ax25_send_header(addresses_wide, sizeof(addresses_wide)/sizeof(addresses_wide[0]));
+      }
+    }
+    else
+    {
+      strncpy(addresses_wide[1].callsign, S_CALLSIGN, 7);
+     	// emz: modified this to get the size of the first address rather than the size of the struct itself, which fails
+      ax25_send_header(addresses_wide, sizeof(addresses_wide)/sizeof(addresses_wide[0]));
+    }
+
+  /*struct s_address addresses[] = { 
+        {D_CALLSIGN, D_CALLSIGN_ID},  // Destination callsign
+        {"", S_CALLSIGN_ID},  // Source callsign (-11 = balloon, -9 = car)
+      };
   strncpy(addresses[1].callsign, S_CALLSIGN, 7);
-  
-	// emz: modified this to get the size of the first address rather than the size of the struct itself, which fails
-  ax25_send_header(addresses, sizeof(addresses)/sizeof(addresses[0]));
+     	// emz: modified this to get the size of the first address rather than the size of the struct itself, which fails
+  ax25_send_header(addresses, sizeof(addresses)/sizeof(addresses[0]));*/
 
   char* dayofmonth = get_dayofmonth();
   if (dayofmonth[0] != 0x00)
@@ -72,7 +100,8 @@ void aprs_send(void)
   }
   
   char* lattitude_check = get_latitudeTrimmed();
-  if (lattitude_check[0] != 0x00)
+  char* longitude_check = get_longitudeTrimmed();
+  if (lattitude_check[0] != 0x00 && longitude_check[0] != 0x00)
   {
     //ax25_send_string("4215.37");//get_latitudeTrimmed());     // Lat: 38deg and 22.20 min (.20 are NOT seconds, but 1/100th of minutes)
     ax25_send_string(get_latitudeTrimmed());     // Lat: 38deg and 22.20 min (.20 are NOT seconds, but 1/100th of minutes)
@@ -110,7 +139,7 @@ void aprs_send(void)
     ax25_send_string("...");             // speed (knots)
   }
   
-  char* altitude = get_gpsaltitude();
+  //char* altitude = get_gpsaltitude();
   if (altitude[0] != 0x00)
   {
     int alt_in_ft = atoi(altitude) * 3.2808399;
@@ -131,15 +160,15 @@ void aprs_send(void)
   //ADC Temperature
   char temp[10];
   itoa(adc_gettemp(), temp, 10);
-  ax25_send_string(" ");
+  ax25_send_string(" T=");
   ax25_send_string(temp);
 
   //Number of satellites
-  ax25_send_string(" ");
+  ax25_send_string(" Sats=");
   char* n_sats = get_sv();
   if (n_sats[0] == 0x00)
   {
-    ax25_send_string("0");
+    ax25_send_string("00");
   }
   else
   {
@@ -149,11 +178,11 @@ void aprs_send(void)
   //Battery/Solar Voltage  
   char temp2[4] = "";
   char* voltage_string = float_to_char(adc_getsolar(), temp2);
-  ax25_send_string(" ");
+  ax25_send_string(" V=");
   ax25_send_string(voltage_string);
 
   //Comment
-  ax25_send_string(" /ul-aprs test");
+  ax25_send_string(" /ul-aprs flight 1");
   ax25_send_byte(' ');
   
   #define COMMENTBUFFER_SIZE 128

@@ -143,15 +143,61 @@ char stationID[8];	//blank - included for testing
 char checksum[3];	//xx
 
 char knots[8];		//xxx.xx
+char formatted_knots[] = "000";
 char* get_speedKnots() 
 {
-	return knots;
+	
+	if (knots[0] == 0x00)
+	{
+		return knots;
+	}
+	else
+	{
+		int i = 0;
+		int format_index = 2;
+		bool got_dec = false;
+		for (i = strlen(knots); i >= 0; i--)
+		{
+			if (knots[i] == '.')
+			{
+				got_dec = true;
+			}
+			else if (got_dec)
+			{
+				formatted_knots[format_index] = knots[i];
+				format_index--;
+			}
+			
+		}
+		return formatted_knots;
+	}
 }
 
 char course[8];		//xxx.x
+char formatted_course[] = "000";
 char* get_course() 
 {
-	return course;
+	if (course[0] == 0x00)
+	{
+		return course;
+	}
+	else
+	{
+		int i = 0;
+		for (i = 0; i < 3; i++)
+		{
+			if (course[i] == '.')
+			{
+				return formatted_course;
+			}
+			else
+			{
+				formatted_course[i] = course[i];
+			}
+			
+		}
+		return formatted_course;
+	}
 }
 	
 char dayofmonth[9];	//ddmmyy

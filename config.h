@@ -44,7 +44,7 @@
 // - Home:       0
 // - IGate:      5
 #define S_CALLSIGN      "KN4GQL"
-#define S_CALLSIGN_ID   7
+#define S_CALLSIGN_ID   11
 
 // Destination callsign: APRS (with SSID=0) is usually okay.
 #define D_CALLSIGN      "APRS"
@@ -57,8 +57,11 @@
 #define DIGI_PATH1      "WIDE2"
 #define DIGI_PATH1_TTL  1
 
+//Altitude threshold to turn of the WIDE path, pathless should be used above this altitude
+#define PATH_ALT_THRES 10000
+
 // Transmit the APRS sentence every X milliseconds
-#define APRS_TRANSMIT_PERIOD 120123
+#define APRS_TRANSMIT_PERIOD 60000
 
 
 
