@@ -250,13 +250,13 @@ enum decodeState {
 }decodeState;
 
 
-void usart1_isr(void)
+/*void usart1_isr(void)
 {
 	uint8_t recv = usart_recv(GPS_USART);
 	//ECHO debug: usart_send_blocking(GPS_USART, recv);
 	nmeaBuffer[nmeaBufferDataPosition % NMEABUFFER_SIZE] = recv;
 	nmeaBufferDataPosition = (nmeaBufferDataPosition + 1) % NMEABUFFER_SIZE;
-}
+}*/
 
 void gps_init() 
 {
@@ -293,7 +293,7 @@ void gps_sendubx(uint8_t* dat, uint8_t size)
     uint8_t sendctr;
     for(sendctr = 0; sendctr < size; sendctr++)
     {
-        usart_send(GPS_USART, dat[sendctr]);
+        //usart_send(GPS_USART, dat[sendctr]);
     }
 }
 

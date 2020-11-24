@@ -73,7 +73,7 @@
 #define GPS_PARSE_PERIOD 50
 
 // Baud rate of GPS USART
-#define GPS_BAUDRATE 9600
+#define DEBUG_BAUDRATE 9600
 
 // NMEA circular buffer size. Must be large enough to hold all received sentences
 #define NMEABUFFER_SIZE 150

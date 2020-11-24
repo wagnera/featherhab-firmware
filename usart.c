@@ -41,30 +41,39 @@ void usart_init(void)
     gps_poweron();
 
     // USART TX
-    gpio_mode_setup(GPS_TX_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, GPS_TX_PIN);
-    gpio_set_output_options(GPS_TX_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_HIGH, GPS_TX_PIN);
-    gpio_set_af(GPS_TX_PORT, GPS_TX_AF, GPS_TX_PIN);
+    gpio_mode_setup(DEBUG_TX_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, DEBUG_TX_PIN);
+    gpio_set_output_options(DEBUG_TX_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_HIGH, DEBUG_TX_PIN);
+    gpio_set_af(DEBUG_TX_PORT, DEBUG_TX_AF, DEBUG_TX_PIN);
 
     // USART RX
-    gpio_mode_setup(GPS_RX_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, GPS_RX_PIN);
-    gpio_set_output_options(GPS_RX_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_HIGH, GPS_RX_PIN);
-    gpio_set_af(GPS_RX_PORT, GPS_RX_AF, GPS_RX_PIN);
+    gpio_mode_setup(DEBUG_RX_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, DEBUG_RX_PIN);
+    gpio_set_output_options(DEBUG_RX_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_HIGH, DEBUG_RX_PIN);
+    gpio_set_af(DEBUG_RX_PORT, DEBUG_RX_AF, DEBUG_RX_PIN);
 
     // USART Config
-    usart_set_baudrate(GPS_USART, GPS_BAUDRATE);
-    usart_set_databits(GPS_USART, 8);
-    usart_set_parity(GPS_USART, USART_PARITY_NONE);
-    usart_set_stopbits(GPS_USART, USART_CR2_STOP_1_0BIT);
-    usart_set_mode(GPS_USART, USART_MODE_TX_RX);
-    usart_set_flow_control(GPS_USART, USART_FLOWCONTROL_NONE);
+    usart_set_baudrate(DEBUG_USART, DEBUG_BAUDRATE);
+    usart_set_databits(DEBUG_USART, 8);
+    usart_set_parity(DEBUG_USART, USART_PARITY_NONE);
+    usart_set_stopbits(DEBUG_USART, USART_CR2_STOP_1_0BIT);
+    usart_set_mode(DEBUG_USART, USART_MODE_TX_RX);
+    usart_set_flow_control(DEBUG_USART, USART_FLOWCONTROL_NONE);
 
     // Enable interrupts
-    usart_enable_rx_interrupt(GPS_USART);
-    nvic_enable_irq(GPS_IRQ);
+    //usart_enable_rx_interrupt(DEBUG_USART);
+    //nvic_enable_irq(DEBUG_IRQ);
 
     // Enable USART
-    usart_enable(GPS_USART);
+    usart_enable(DEBUG_USART);
 
 }
+
+void serial0_sendString(const char* string) {
+	while(*string != 0x00)
+	{
+		usart_send_blocking(USART1, *string);
+		string++;
+	}
+}
+
 
 // vim:softtabstop=4 shiftwidth=4 expandtab 

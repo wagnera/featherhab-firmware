@@ -30,16 +30,13 @@
 #include <stdint.h>
 
 // Hardware config
-#define GPS_USART USART1
-#define GPS_IRQ NVIC_USART1_IRQ
+#define GPS_SCL_PORT GPIOB
+#define GPS_SCL_PIN GPIO6
+#define GPS_SCL_AF GPIO_AF0
 
-#define GPS_TX_PORT GPIOB
-#define GPS_TX_PIN GPIO6
-#define GPS_TX_AF GPIO_AF0
-
-#define GPS_RX_PORT GPIOB
-#define GPS_RX_PIN GPIO7
-#define GPS_RX_AF GPIO_AF0
+#define GPS_SDA_PORT GPIOB
+#define GPS_SDA_PIN GPIO7
+#define GPS_SDA_AF GPIO_AF0
 
 #define GPS_ONOFF_PORT GPIOA
 #define GPS_ONOFF_PIN GPIO1

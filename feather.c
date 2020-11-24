@@ -84,7 +84,7 @@ int main(void)
     si446x_setup();
 
     //delay(500); //wait a bit before turning on GPS
-    gps_init();
+    //gps_init();
 
     afsk_init();
     usart_init();
@@ -126,11 +126,11 @@ int main(void)
             last_aprs = get_millis_elapsed();
         }
 
-        if(get_millis_elapsed() - last_gps > GPS_PARSE_PERIOD)
+        /*if(get_millis_elapsed() - last_gps > GPS_PARSE_PERIOD)
         {
             parse_gps_transmission();
             last_gps = get_millis_elapsed();
-        }
+        }*/
 
         if(afsk_request_cwoff())
         {
@@ -151,13 +151,14 @@ int main(void)
         }
         else
         {
-            /*LED_ON;
-            delay(1000);
+            LED_ON;
+            delay(500);
             LED_OFF;
-            delay(1000);*/
+            delay(500);
         }
 
 //        pwr_set_stop_mode();
+        serial0_sendString("Test test");
         sleep_now();
  //       clockenable();
     }
