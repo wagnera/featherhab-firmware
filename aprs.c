@@ -57,7 +57,7 @@ void aprs_send(void)
     char* altitude = get_gpsaltitude();
     if (altitude[0] != 0x00)
     {
-      if (str2float(altitude) > PATH_ALT_THRES)
+      if (str2float(altitude) * 3.2808399 > PATH_ALT_THRES)
       {
         strncpy(addresses_pathless[1].callsign, S_CALLSIGN, 7);
         // emz: modified this to get the size of the first address rather than the size of the struct itself, which fails
