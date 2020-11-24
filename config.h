@@ -57,7 +57,7 @@
 #define DIGI_PATH1      "WIDE2"
 #define DIGI_PATH1_TTL  1
 
-//Altitude threshold to turn of the WIDE path, pathless should be used above this altitude
+//Altitude threshold to turn off the WIDE path, pathless should be used above this altitude
 #define PATH_ALT_THRES 10000
 
 // Transmit the APRS sentence every X milliseconds

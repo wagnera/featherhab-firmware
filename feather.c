@@ -97,7 +97,7 @@ int main(void)
     // TODO: Leave GPS on for 10 minutes at the start, then only turn it on a bit before each transmission
 
     
-    uint32_t aprs_period = 30000;
+    uint32_t aprs_period = 60000;
 
     LED_ON;
     delay(400);
@@ -106,7 +106,7 @@ int main(void)
     while(1)
     {
         // Transmit very often for the first 8 minutes
-        if(get_millis_elapsed() > 480000)
+        if(get_millis_elapsed() > 1800000)
         {
             aprs_period = APRS_TRANSMIT_PERIOD;
         }
