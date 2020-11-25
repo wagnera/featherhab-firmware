@@ -54,7 +54,7 @@ void usart_init(void)
     usart_set_baudrate(DEBUG_USART, DEBUG_BAUDRATE);
     usart_set_databits(DEBUG_USART, 8);
     usart_set_parity(DEBUG_USART, USART_PARITY_NONE);
-    usart_set_stopbits(DEBUG_USART, USART_CR2_STOP_1_0BIT);
+    usart_set_stopbits(DEBUG_USART, USART_STOPBITS_1);
     usart_set_mode(DEBUG_USART, USART_MODE_TX_RX);
     usart_set_flow_control(DEBUG_USART, USART_FLOWCONTROL_NONE);
 

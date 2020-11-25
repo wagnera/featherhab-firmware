@@ -3,3 +3,4 @@
 *.o
 *.d
 *.map
+generated.stm32f0*

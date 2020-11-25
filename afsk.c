@@ -93,8 +93,15 @@ void afsk_init(void)
     gpio_set_output_options(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_HIGH,  GPIO10);
     gpio_set_af(GPIOA, GPIO_AF2, GPIO10);
 
-    // Reset and configure timer
-    timer_reset(TIM1);
+    //configure timer
+    /* Enable TIM2 clock. */
+	rcc_periph_clock_enable(RCC_TIM1);
+
+	/* Enable TIM2 interrupt. */
+	nvic_enable_irq(NVIC_TIM1_CC_IRQ);
+
+	/* Reset TIM2 peripheral to defaults. */
+	rcc_periph_reset_pulse(RST_TIM1);
     //TIM_CR1_CKD_CK_INT_MUL_4
     timer_set_mode(TIM1, TIM_CR1_CKD_CK_INT, TIM_CR1_CMS_EDGE, //TIM_CR1_CMS_CENTER_1,
                        TIM_CR1_DIR_UP);

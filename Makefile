@@ -17,25 +17,41 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+PROJECT = feather
 BINARY = feather
+BUILD_DIR = bin
 
 DFU_ADDRESS = 0x08002000
-LDSCRIPT = feather.ld 
+#LDSCRIPT = feather.ld 
 
 # append currdir to includes?
 INCLUDE=-I$(CURDIR)
 CFLAGS+= $(INCLUDE)
 
 # Project Source Files
-SRC+=afsk.c
-SRC+=si446x.c
-SRC+=delay.c
-SRC+=ax25.c
-SRC+=aprs.c
-SRC+=gps.c
-SRC+=usart.c
-SRC+=sleep.c
-SRC+=adc.c
+CFILES+=feather.c
+CFILES+=afsk.c
+CFILES+=si446x.c
+CFILES+=delay.c
+CFILES+=ax25.c
+CFILES+=aprs.c
+CFILES+=gps.c
+CFILES+=usart.c
+CFILES+=sleep.c
+CFILES+=adc.c
+CFILES+=i2c.c
+
+# TODO - you will need to edit these two lines!
+DEVICE=stm32f031g6u6
+OOCD_FILE = board/stm32f0discovery.cfg
+
+# You shouldn't have to edit anything below here.
+VPATH += $(SHARED_DIR)
+INCLUDES += $(patsubst %,-I%, . $(SHARED_DIR))
+OPENCM3_DIR=./libopencm3
+
+include $(OPENCM3_DIR)/mk/genlink-config.mk
+include ./rules.mk
+include $(OPENCM3_DIR)/mk/genlink-rules.mk
 
 
-include Makefile.include

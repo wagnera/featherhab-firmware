@@ -13,6 +13,7 @@
 #define DEBUG_RX_AF GPIO_AF1
 
 void usart_init(void);
+void serial0_sendString(const char* string);
 
 #endif
 

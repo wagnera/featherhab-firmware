@@ -32,11 +32,11 @@
 // Hardware config
 #define GPS_SCL_PORT GPIOB
 #define GPS_SCL_PIN GPIO6
-#define GPS_SCL_AF GPIO_AF0
+#define GPS_SCL_AF GPIO_AF1
 
 #define GPS_SDA_PORT GPIOB
 #define GPS_SDA_PIN GPIO7
-#define GPS_SDA_AF GPIO_AF0
+#define GPS_SDA_AF GPIO_AF1
 
 #define GPS_ONOFF_PORT GPIOA
 #define GPS_ONOFF_PIN GPIO1

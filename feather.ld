@@ -25,4 +25,4 @@ rom (rx) : ORIGIN = 0x08000000, LENGTH = 32K
 ram (rwx) : ORIGIN = 0x20000000, LENGTH = 4K
 }
 /* Include the common ld script. */
-INCLUDE libopencm3_stm32f0.ld
+INCLUDE stm32f03xz6.ld

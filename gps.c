@@ -31,16 +31,8 @@
 #include "gps.h"
 #include "delay.h"
 #include "led.h"
-/*
+#include "i2c.h"
 
-void serial0_sendString(const char* string) {
-	while(*string != 0x00)
-	{
-		usart_send_blocking(USART1, *string);
-		string++;
-	}
-}
-*/
 // Circular buffer for incoming data
 uint8_t nmeaBuffer[NMEABUFFER_SIZE];
 
@@ -268,6 +260,8 @@ void gps_init()
     knots[0] = 0x00;
     course[0] = 0x00;
     dayofmonth[0] = 0x00;
+
+	i2c_setup();
 
     gps_poweron();
     delay(100); // Make sure GPS is awake and alive

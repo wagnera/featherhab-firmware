@@ -34,7 +34,7 @@ void adc_init(void)
     rcc_periph_clock_enable(RCC_ADC);
     rcc_periph_clock_enable(RCC_GPIOA);
 
-    uint8_t channel_array[] = { ADC_CHANNEL6, ADC_CHANNEL_TEMP };
+    uint8_t channel_array[] = { 0x06, ADC_CHANNEL_TEMP };
 
     adc_power_off(ADC1);
 
@@ -94,7 +94,7 @@ int16_t adc_gettemp(void)
 float adc_getsolar(void)
 {
     // Read first channel (internal temperature)
-    uint8_t channel_array[] = { ADC_CHANNEL6 };
+    uint8_t channel_array[] = { 0x06 };
     adc_set_regular_sequence(ADC1, 1, channel_array);
     adc_start_conversion_regular(ADC1);
     while (!(adc_eoc(ADC1)));
