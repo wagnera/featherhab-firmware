@@ -56,7 +56,7 @@ void si446x_setup(void)
     gpio_set_af(SI446x_SCK_PORT, SI446x_SCK_AF, SI446x_SCK_PIN);
 
     // Init SPI interface
-    spi_init_master(SI446x_SPI, SPI_CR1_BAUDRATE_FPCLK_DIV_64, SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE, SPI_CR1_CPHA_CLK_TRANSITION_1, SPI_CR1_CRCL_8BIT, SPI_CR1_MSBFIRST);
+    spi_init_master(SI446x_SPI, SPI_CR1_BAUDRATE_FPCLK_DIV_64, SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE, SPI_CR1_CPHA_CLK_TRANSITION_1, SPI_CR1_MSBFIRST);
     spi_enable_ss_output(SI446x_SPI);
     spi_enable(SI446x_SPI);
     spi_set_crcl_8bit(SPI1);

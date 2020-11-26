@@ -54,7 +54,7 @@ void usart_init(void)
     usart_set_baudrate(GPS_USART, GPS_BAUDRATE);
     usart_set_databits(GPS_USART, 8);
     usart_set_parity(GPS_USART, USART_PARITY_NONE);
-    usart_set_stopbits(GPS_USART, USART_CR2_STOP_1_0BIT);
+    usart_set_stopbits(GPS_USART, USART_STOPBITS_1);
     usart_set_mode(GPS_USART, USART_MODE_TX_RX);
     usart_set_flow_control(GPS_USART, USART_FLOWCONTROL_NONE);
 

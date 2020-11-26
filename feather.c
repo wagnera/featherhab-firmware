@@ -22,6 +22,7 @@
 
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/rcc.h>
+#include <libopencm3/stm32/flash.h>
 #include <libopencm3/stm32/timer.h>
 #include <libopencm3/stm32/pwr.h>
 
@@ -48,7 +49,27 @@ static void clockdisable(void)
 }
 static void clockenable(void)
 {
-    rcc_clock_setup_in_hsi_out_16mhz(); // may want to slow down for power
+    rcc_osc_on(RCC_HSI);
+	rcc_wait_for_osc_ready(RCC_HSI);
+	rcc_set_sysclk_source(RCC_HSI);
+
+	rcc_set_hpre(RCC_CFGR_HPRE_NODIV);
+	rcc_set_ppre(RCC_CFGR_PPRE_NODIV);
+
+	flash_prefetch_enable();
+	flash_set_ws(FLASH_ACR_LATENCY_000_024MHZ);
+
+	/* 8MHz * 12 / 2 = 48MHz */
+	rcc_set_pll_multiplication_factor(RCC_CFGR_PLLMUL_MUL4);
+	rcc_set_pll_source(RCC_CFGR_PLLSRC_HSI_CLK_DIV2);
+
+	rcc_osc_on(RCC_PLL);
+	rcc_wait_for_osc_ready(RCC_PLL);
+	rcc_set_sysclk_source(RCC_PLL);
+
+	rcc_apb1_frequency = 16000000;
+	rcc_ahb_frequency = 16000000;
+
     // Enable clocks 
     rcc_periph_clock_enable(RCC_GPIOB);
     rcc_periph_clock_enable(RCC_GPIOA);

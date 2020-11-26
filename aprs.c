@@ -182,7 +182,7 @@ void aprs_send(void)
   ax25_send_string(voltage_string);
 
   //Comment
-  ax25_send_string(" /ul-aprs flight 1");
+  ax25_send_string(" /ul-aprs flight 2");
   ax25_send_byte(' ');
   
   #define COMMENTBUFFER_SIZE 128
