@@ -1,11 +1,14 @@
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/i2c.h>
 #include <libopencm3/stm32/gpio.h>
+#include <libopencm3/stm32/usart.h>
 
 #include "i2c.h"
 #include "gps.h"
+#include "usart.h"
+#include "delay.h"
 
-static void i2c_setup(void)
+void i2c_setup(void)
 {
 	rcc_periph_clock_enable(RCC_I2C1);
 	rcc_periph_clock_enable(RCC_GPIOB);
@@ -28,4 +31,16 @@ static void i2c_setup(void)
 	//addressing mode
 	i2c_set_7bit_addr_mode(I2C1);
 	i2c_peripheral_enable(I2C1);
+}
+
+void i2c_poll_test(void)
+{
+	// write 0x42, 0x75 into address 0x01
+	uint8_t cmdWrite[] = { 0x01, 0x07 };
+	uint8_t dataOut[2];
+	i2c_transfer7(I2C1, 0x42, cmdWrite, sizeof(cmdWrite), dataOut, sizeof(dataOut));
+	//delay(10);
+	//usart_send_blocking(USART1, dataOut[0]);
+	//usart_send_blocking(USART1, dataOut[1]);
+
 }

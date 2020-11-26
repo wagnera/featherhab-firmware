@@ -36,6 +36,7 @@
 #include "sleep.h"
 #include "si446x.h"
 #include "led.h"
+#include "i2c.h"
 
 static void clockdisable(void)
 {
@@ -143,15 +144,16 @@ int main(void)
                 LED_OFF;
                 delay(30);
             }*/
-            aprs_send();
+            //aprs_send();
             last_aprs = get_millis_elapsed();
         }
 
-        /*if(get_millis_elapsed() - last_gps > GPS_PARSE_PERIOD)
+        if(get_millis_elapsed() - last_gps > GPS_PARSE_PERIOD)
         {
-            parse_gps_transmission();
+            i2c_poll_test();
+            //parse_gps_transmission();
             last_gps = get_millis_elapsed();
-        }*/
+        }
 
         if(afsk_request_cwoff())
         {
@@ -172,14 +174,14 @@ int main(void)
         }
         else
         {
-            /*LED_ON;
+            LED_ON;
             delay(100);
             LED_OFF;
-            delay(1000);*/
+            delay(1000);
         }
 
 //        pwr_set_stop_mode();
-        serial0_sendString("Loop\n");
+        //serial0_sendString("Loop\n");
         sleep_now();
  //       clockenable();
     }
