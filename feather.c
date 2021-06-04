@@ -178,9 +178,9 @@ int main(void)
             delay(1000);*/
         }
 
-//        pwr_set_stop_mode();
+       // pwr_set_stop_mode();
         sleep_now();
- //       clockenable();
+      // clockenable();
     }
 }
 
