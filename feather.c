@@ -24,6 +24,7 @@
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/flash.h>
 #include <libopencm3/stm32/timer.h>
+#include <libopencm3/cm3/nvic.h>
 #include <libopencm3/stm32/pwr.h>
 
 #include "config.h"
@@ -36,6 +37,17 @@
 #include "sleep.h"
 #include "si446x.h"
 #include "led.h"
+
+
+volatile bool send_aprs_check = false;
+
+uint32_t last_aprs = APRS_TRANSMIT_PERIOD;
+uint32_t last_gps  = GPS_PARSE_PERIOD;
+
+// TODO: Leave GPS on for 10 minutes at the start, then only turn it on a bit before each transmission
+
+
+uint32_t aprs_period = 60000;
 
 static void clockdisable(void)
 {
@@ -79,6 +91,51 @@ static void clockenable(void)
  
 }
 
+static void setupTimers(void)
+{
+    rcc_periph_clock_enable(RCC_TIM3);
+    nvic_enable_irq(NVIC_TIM3_IRQ);
+    nvic_set_priority(NVIC_TIM3_IRQ,1);
+    TIM_CNT(TIM3) = 1;
+    TIM_PSC(TIM3) = 16000;
+    TIM_ARR(TIM3) = 1000;
+    TIM_DIER(TIM3) |= TIM_DIER_UIE;
+    //TIM_CR1(TIM3) |= TIM_CR1_CEN;
+
+    rcc_periph_clock_enable(RCC_TIM14);
+    nvic_enable_irq(NVIC_TIM14_IRQ);
+    nvic_set_priority(NVIC_TIM14_IRQ,2);
+    TIM_CNT(TIM14) = 1;
+    TIM_PSC(TIM14) = 64000;
+    TIM_ARR(TIM14) = 1506;
+    TIM_DIER(TIM14) |= TIM_DIER_UIE;
+    TIM_CR1(TIM14) |= TIM_CR1_CEN;
+
+}
+
+void tim3_isr(void)
+{
+    //systick_setup(1000);
+    //gpio_toggle(GPIOB,GPIO0);
+
+    parse_gps_transmission();
+
+    if(afsk_request_cwoff())
+    {
+        si446x_cw_off();
+        si446x_shutdown();
+    }
+    //systick_stop();
+    TIM_SR(TIM3) &= ~TIM_SR_UIF;
+}
+
+void tim14_isr(void)
+{
+    //gpio_toggle(GPIOB,GPIO0);
+    send_aprs_check = true;
+    TIM_SR(TIM14) &= ~TIM_SR_UIF;
+}
+
 static void configLED(void)
 {
     /* setup LED */
@@ -93,7 +150,7 @@ int main(void)
     clockenable();
 
     rtc_init();
-    sleep_init();
+    //sleep_init();
     
 
     adc_init();
@@ -110,78 +167,39 @@ int main(void)
     afsk_init();
     usart_init();
     configLED();
+    parse_gps_transmission();
+    setupTimers();
+    systick_stop();
+    sleep_init();
 
-    // Main loop
-    uint32_t last_aprs = APRS_TRANSMIT_PERIOD;
-    uint32_t last_gps  = GPS_PARSE_PERIOD;
-    
-    // TODO: Leave GPS on for 10 minutes at the start, then only turn it on a bit before each transmission
 
-    
-    uint32_t aprs_period = 60000;
+   // gps_poweroff();
 
-    LED_ON;
-    delay(400);
-    LED_OFF;
-    delay(4000);
+
+
+    // LED_ON;
+    // delay(400);
+    // LED_OFF;
+    // delay(4000);
     while(1)
     {
-        // Transmit very often for the first 8 minutes
-        if(get_millis_elapsed() > 1800000)
-        {
-            aprs_period = APRS_TRANSMIT_PERIOD;
-        }
-            
 
-        if(get_millis_elapsed() - last_aprs > aprs_period) 
-        {
-            /*int ii;
-            for (ii=0; ii < 20; ii++)
-            {
-                LED_ON;
-                delay(30);
-                LED_OFF;
-                delay(30);
-            }*/
-            aprs_send();
-            last_aprs = get_millis_elapsed();
-        }
-
-        if(get_millis_elapsed() - last_gps > GPS_PARSE_PERIOD)
-        {
-            parse_gps_transmission();
-            last_gps = get_millis_elapsed();
-        }
-
-        if(afsk_request_cwoff())
-        {
-            si446x_cw_off();
-            si446x_shutdown();
-        }
-
-        if (gps_hasfix())
-        {
-            /*int ii;
-            for (ii=0; ii < 10; ii++)
-            {
-                LED_ON;
-                delay(500);
-                LED_OFF;
-                delay(100);
-            }*/        
-        }
-        else
-        {
-            /*LED_ON;
-            delay(1000);
-            LED_OFF;
-            delay(1000);*/
-        }
+        // if (send_aprs_check)
+        // {
+        //      systick_setup(1000);
+        //      gpio_toggle(GPIOB,GPIO0);
+        //      //LED_ON;
+        //      //aprs_send();
+        //      //LED_OFF;
+        //      send_aprs_check = false;
+        //      systick_stop();
+        // }
 
        // pwr_set_stop_mode();
         sleep_now();
       // clockenable();
     }
+    
 }
 
 // vim:softtabstop=4 shiftwidth=4 expandtab 

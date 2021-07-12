@@ -30,7 +30,8 @@
 
 void sleep_init(void)
 {
-    SCB_SCR &= ~4; // No deep sleep
+    SCB_SCR &= ~SCB_SCR_SLEEPDEEP; // No deep sleep
+    SCB_SCR |= SCB_SCR_SLEEPONEXIT; // Sleep on exit
 
     /* To be able to debug in stop mode */
 //    DBGMCU->CR |= DBGMCU_CR_STANDBY | DBGMCU_CR_STOP | DBGMCU_CR_SLEEP;

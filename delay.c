@@ -35,6 +35,12 @@ void systick_setup(int freq)
     systick_counter_enable();
 }
 
+void systick_stop(void)
+{
+    systick_interrupt_disable();
+    systick_counter_disable();
+}
+
 volatile uint32_t system_millis;
 
 void delay(uint32_t delay)
