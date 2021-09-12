@@ -63,6 +63,9 @@
 // Transmit the APRS sentence every X milliseconds
 #define APRS_TRANSMIT_PERIOD 60000
 
+//Initial setup period where transmist can be faster or LED is on
+#define START_UP_PERIOD 3600000 //one hour
+
 
 
 // --------------------------------------------------------------------------

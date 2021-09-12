@@ -126,11 +126,26 @@ int main(void)
     delay(4000);
     while(1)
     {
-        // Transmit very often for the first 8 minutes
-        if(get_millis_elapsed() > 1800000)
+        // Transmit very often for the first 60 minutes
+        if(get_millis_elapsed() > START_UP_PERIOD)
         {
             aprs_period = APRS_TRANSMIT_PERIOD;
         }
+        else
+        {
+            if (gps_hasfix())
+           {
+                int ii;
+                for (ii=0; ii < 10; ii++)
+                {
+                    LED_ON;
+                    delay(500);
+                    LED_OFF;
+                    delay(100);
+                }       
+           }
+        }
+        
             
 
         if(get_millis_elapsed() - last_aprs > aprs_period) 
